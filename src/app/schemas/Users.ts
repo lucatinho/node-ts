@@ -1,13 +1,13 @@
-import {Schema, model, Document} from 'mongoose';
+import {model, Document} from 'mongoose';
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 interface UserInterface extends Document {
-    name?: string;
-    email?: string;
-    password?: string;
+    name: string;
+    email: string;
+    password: string;
     passwordResetToken?: string;
-    passwordResetExpires?: Date;
+    passwordResetExpires: Date;
     createdAt?: Date;
 
     fullName(): string;

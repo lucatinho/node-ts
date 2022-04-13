@@ -1,22 +1,41 @@
-interface IMailTo {
-    name: string;
-    email: string;
-}
+import sgMail, { MailDataRequired } from "@sendgrid/mail";
 
-interface IMailMessage {
-    subject: string;
-    body: string;
-    attachment?: Array<string>;
-}
+const sendgridInfo = require('../config/sgMail.json');
 
-interface IMessageDTO {
-    to: IMailTo;
-    message: IMailMessage;
-}
+// interface IMailTo {
+//     name: string;
+//     email: string;
+// }
+
+// interface IMailMessage {
+//     subject: string;
+//     body: string;
+//     attachment?: Array<string>;
+// }
+
+// interface IMessageDTO {
+//     to: IMailTo;
+//     message: IMailMessage;
+// }
+
+// class EmailService2 {
+//     sendMail({to, message}: IMessageDTO) {
+//         console.log(`Email enviado ${to.name}: ${message.subject}`);
+//     }
+// }
+
 
 class EmailService {
-    sendMail({to, message}: IMessageDTO) {
-        console.log(`Email enviado ${to.name}: ${message.subject}`);
+    sendMail_forgot_password(email: string, token: string): MailDataRequired {
+        sgMail.setApiKey(sendgridInfo.SENDGRID_API_KEY);
+
+        return {
+            to: email, // Change to your recipient
+            from: sendgridInfo.FROM, // Change to your verified sender
+            subject: 'Vibranium - Recuperação de senha!',
+            text: 'Recover Password',
+            html: `<a href="https://vibranium-alunos.parcas.com.br?token=${token}">Clique aqui para trocar sua senha</a>`,
+        }
     }
 }
 

@@ -1,9 +1,9 @@
 // import express from 'express';
 import app from './app';
-// import routes from "./routes";
+// import authRotes from "./authRotes";
 
 // const app = express();
 
-// app.use(routes);
+// app.use(authRotes);
 
 app.listen(3000);

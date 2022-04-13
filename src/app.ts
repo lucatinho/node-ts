@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 
-import routes from './routes';
+import authRotes from './routes/AuthRotes';
+import rotes from './routes/Rotes';
 
 class App {
     public express: express.Application;
@@ -25,7 +26,7 @@ class App {
     }
 
     private routes(): void {
-        this.express.use(routes);
+        this.express.use([authRotes, rotes]);
     }
 }
 

@@ -28,8 +28,6 @@ class CursoController {
         try {
             const curso = await Curso.create(req.body);
 
-            // await curso.save();
-
             return res.send({curso});
         } catch (err) {
             return res.status(400).send({error: 'Erro interno'});

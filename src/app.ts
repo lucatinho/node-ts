@@ -3,7 +3,8 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 
 import authRotes from './routes/AuthRotes';
-import rotes from './routes/Rotes';
+import curso from './routes/Cursos';
+import roleRoutes from "./routes/RolesRoutes";
 
 class App {
     public express: express.Application;
@@ -26,7 +27,7 @@ class App {
     }
 
     private routes(): void {
-        this.express.use([authRotes, rotes]);
+        this.express.use([authRotes, roleRoutes, curso]);
     }
 }
 

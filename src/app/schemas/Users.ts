@@ -1,25 +1,20 @@
 import {model, Document} from 'mongoose';
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import {Roles} from "../enum/Roles";
 
 interface UserInterface extends Document {
     name: string;
     email: string;
     password: string;
+    roles: Array<Roles>;
     passwordResetToken?: string;
     passwordResetExpires: Date;
+    isActive: boolean;
     createdAt?: Date;
 
     fullName(): string;
 }
-
-// const UserSchema = new Schema({
-//     email: String,
-//     firstName: String,
-//     lastname: String
-// }, {
-//     timestamps: true
-// })
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -45,6 +40,16 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         select: false
     },
+    roles: {
+        type: [String],
+        enum: Roles,
+        default: [Roles.ALUNO]
+    },
+    isActive: {
+        type: Boolean,
+        require: true,
+        default: true
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -55,10 +60,6 @@ UserSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, 10);
     next();
 })
-
-// const User = mongoose.model('User', UserSchema);
-// module.exports = User;
-
 
 UserSchema.methods.fullName = function (): string {
     return this.name + ' ' + this.email;

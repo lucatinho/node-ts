@@ -24,7 +24,7 @@ const CursoSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    ativo: {
+    isActive: {
         type: Boolean,
         require: true,
         default: false

@@ -5,9 +5,10 @@ interface CursoInterface extends Document {
     titulo: string;
     subtitulo: string;
     img: string;
-    ativo: boolean;
+    isActive: boolean;
     ordem: number;
     createdAt?: Date;
+    materias: Array<any>;
 }
 
 const CursoSchema = new mongoose.Schema({
@@ -33,6 +34,18 @@ const CursoSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
+    materias: [
+        {
+            materia: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Materia'
+            },
+            ordem: {
+                type: Number,
+                default: 0
+            }
+        }
+    ],
     createdAt: {
         type: Date,
         default: Date.now

@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
 const authConfig = require('../../config/auth.json');
-import User from '../schemas/Users';
+import User from '../schemas/User';
 import EmailService from "../../services/EmailService";
 import sgMail from "@sendgrid/mail";
 

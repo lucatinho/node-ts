@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 
-import Curso from '../schemas/Cursos';
+import Curso from '../schemas/Curso';
 
 class CursoController {
     public async list(req: Request, res: Response): Promise<Response> {

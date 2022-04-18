@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from "express";
-import User from "../schemas/Users";
+import User from "../schemas/User";
 import {Roles} from "../enum/Roles";
 
 function authorize(allowedRoles: Array<Roles>) {

@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 
-import User from "../schemas/Users";
+import User from "../schemas/User";
 import {Roles} from "../enum/Roles";
 
 class RoleController {

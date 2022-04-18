@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import authRotes from './routes/AuthRotes';
 import curso from './routes/Cursos';
 import roleRoutes from "./routes/RolesRoutes";
+import materia from "./routes/Materias";
+import aula from "./routes/Aulas";
 
 class App {
     public express: express.Application;
@@ -27,7 +29,7 @@ class App {
     }
 
     private routes(): void {
-        this.express.use([authRotes, roleRoutes, curso]);
+        this.express.use([authRotes, roleRoutes, curso, materia, aula]);
     }
 }
 

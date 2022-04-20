@@ -7,6 +7,8 @@ import curso from './routes/Cursos';
 import roleRoutes from "./routes/RolesRoutes";
 import materia from "./routes/Materias";
 import aula from "./routes/Aulas";
+import progressoRoutes from "./routes/ProgressoRoutes";
+import cursoMateria from "./routes/CursoMaterias";
 
 class App {
     public express: express.Application;
@@ -29,7 +31,7 @@ class App {
     }
 
     private routes(): void {
-        this.express.use([authRotes, roleRoutes, curso, materia, aula]);
+        this.express.use([authRotes, roleRoutes, curso, cursoMateria, materia, aula, progressoRoutes]);
     }
 }
 

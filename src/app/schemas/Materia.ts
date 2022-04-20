@@ -7,7 +7,6 @@ interface MateriaInterface extends Document {
     img: string;
     aulas: Array<any>;
     isActive: boolean;
-    createdAt?: Date;
     curso: string;
 }
 
@@ -33,10 +32,6 @@ const MateriaSchema = new mongoose.Schema({
         type: Boolean,
         require: true,
         default: false
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
     },
     curso: {
         type: [mongoose.Schema.Types.ObjectId],

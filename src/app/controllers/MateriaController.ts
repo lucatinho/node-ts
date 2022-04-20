@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 
 import Materia from '../schemas/Materia';
 import Curso from "../schemas/Curso";
+import Curso_Materia from "../schemas/CursoMateria";
 
 class MateriaController {
     public async list(req: Request, res: Response): Promise<Response> {
@@ -31,12 +32,11 @@ class MateriaController {
     public async create(req: Request, res: Response): Promise<Response> {
         try {
             const {curso, ordem} = req.body;
-            if (!curso || !ordem) {
+            if (!curso || ordem !== 0) {
                 return res.status(400).send({error: 'curso/ordem não informada'});
             }
 
-            let cursoDB = await Curso.findById(curso[0]);
-            // console.log(curso[0])
+            let cursoDB = await Curso.findById(curso);
 
             if (!cursoDB) {
                 return res.status(400).send({error: 'curso não encontrada'});
@@ -44,19 +44,17 @@ class MateriaController {
             const materia = await Materia.create(req.body);
 
             const obj = {
+                curso: curso,
                 materia: materia._id,
                 ordem: ordem
             }
-            // const obj = {
-            //     materia: '625dc2615d4d1f49cc2ed4c5',
-            //     ordem: 1
-            // }
 
-            cursoDB.materias.push(obj);
-            console.log(cursoDB.materias);
+            const cursoMateria = await Curso_Materia.create(obj);
 
-            const teste = await Materia.findByIdAndUpdate(curso[0], cursoDB, {new: true});
-            console.log(teste);
+            cursoDB.curso_materias.push(cursoMateria._id);
+            // console.log(cursoDB.materias);
+
+            await Curso.findByIdAndUpdate(curso, cursoDB, {new: true});
 
             return res.send({materia});
             // return res.send({teste});

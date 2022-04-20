@@ -1,29 +1,23 @@
 import {Request, Response} from "express";
 
-import Curso from '../schemas/Curso';
+import CursoMateria from '../schemas/CursoMateria';
 
-class CursoController {
+class CursoMateriaController {
     public async list(req: Request, res: Response): Promise<Response> {
         try {
-            const cursos = await Curso.find();
+            const cursoMaterias = await CursoMateria.find();
 
-            return res.send({cursos});
+            return res.send({cursoMaterias});
         } catch (err) {
             return res.status(400).send({error: 'Erro interno'});
         }
     }
 
-    public async cursoId(req: Request, res: Response): Promise<Response> {
+    public async cursoMateriaId(req: Request, res: Response): Promise<Response> {
         try {
-            const curso = await Curso.findById(req.params.cursoId).populate({
-                path: 'curso_materias',
-                populate: {
-                    path: 'materia',
-                    populate: {path: 'aulas'}
-                }
-            });
+            const cursoMateria = await CursoMateria.findById(req.params.cursoMateriaId);
 
-            return res.send({curso});
+            return res.send({cursoMateria});
         } catch (err) {
             return res.status(400).send({error: 'Erro interno'});
         }
@@ -32,9 +26,9 @@ class CursoController {
 
     public async create(req: Request, res: Response): Promise<Response> {
         try {
-            const curso = await Curso.create(req.body);
+            const cursoMateria = await CursoMateria.create(req.body);
 
-            return res.send({curso});
+            return res.send({cursoMateria});
         } catch (err) {
             return res.status(400).send({error: 'Erro interno'});
         }
@@ -44,14 +38,14 @@ class CursoController {
         try {
             const body = req.body;
 
-            const curso = await Curso.findByIdAndUpdate(req.params.cursoId, body, {new: true});
-            if (!curso) {
-                return res.status(400).send({error: 'Curso não encontrado'});
+            const cursoMateria = await CursoMateria.findByIdAndUpdate(req.params.cursoMateriaId, body, {new: true});
+            if (!cursoMateria) {
+                return res.status(400).send({error: 'CursoMateria não encontrado'});
             }
 
-            await curso.save();
+            await cursoMateria.save();
 
-            return res.send({curso});
+            return res.send({cursoMateria});
         } catch (err) {
             return res.status(400).send({error: 'Erro interno'});
         }
@@ -60,7 +54,7 @@ class CursoController {
 
     public async delete(req: Request, res: Response): Promise<Response> {
         try {
-            await Curso.findByIdAndRemove(req.params.cursoId);
+            await CursoMateria.findByIdAndRemove(req.params.cursoMateriaId);
 
             return res.send({sucess: 'Removido com sucesso'});
         } catch (err) {
@@ -70,4 +64,4 @@ class CursoController {
     }
 }
 
-export default new CursoController()
+export default new CursoMateriaController()

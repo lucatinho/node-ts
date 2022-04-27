@@ -11,7 +11,7 @@ const route_fix = '/role';
 
 roleRoutes.use(authMiddleware);
 
-roleRoutes.get(`${route_fix}`, authorize([Roles.ADMIN]), RoleController.listRoles);
-roleRoutes.put(`${route_fix}/alt_user_role`, authorize([Roles.ADMIN]), RoleController.setRoles);
+roleRoutes.get(`${route_fix}`, authorize([Roles.ROLE_PARCAS]), RoleController.listRoles);
+roleRoutes.put(`${route_fix}/alt_user_role`, authorize([Roles.ROLE_PARCAS]), RoleController.setRoles);
 
 export default roleRoutes;

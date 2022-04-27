@@ -9,7 +9,7 @@ import EmailService from "../../services/EmailService";
 import sgMail from "@sendgrid/mail";
 
 function generateToken(params = {}) {
-    return jwt.sign(params, authConfig.secret, {expiresIn: 86400});
+    return jwt.sign(params, authConfig.secret, {expiresIn: 64800});
 }
 
 class UserController {
@@ -46,6 +46,18 @@ class UserController {
         user.password = undefined!;
 
         return res.send({user, token: generateToken({id: user.id})});
+    }
+
+    public async byToken(req: Request | any, res: Response): Promise<Response> {
+        const user = await User.findOne({_id: req.userId});
+
+        if (!user) {
+            return res.status(400).send({error: 'usuario não encontrado'});
+        }
+
+        user.password = undefined!;
+
+        return res.send({user});
     }
 
     public async forgot_password(req: Request, res: Response): Promise<any> {

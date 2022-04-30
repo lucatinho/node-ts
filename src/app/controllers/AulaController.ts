@@ -7,7 +7,6 @@ class AulaController {
     public async list(req: Request, res: Response): Promise<Response> {
         try {
             const aulas = await Aula.find();
-            console.log(aulas);
 
             return res.send({aulas});
         } catch (err) {
@@ -65,6 +64,29 @@ class AulaController {
             return res.status(400).send({error: 'Erro interno'});
         }
 
+    }
+
+    public async ordemAulas(req: Request, res: Response): Promise<Response> {
+        try {
+            const {ordenacao} = req.body;
+            let aulaOrdem: Array<any> = new Array<any>();
+
+
+            for await (let aulOrder of ordenacao) {
+                const id = aulOrder._id;
+
+                delete aulOrder._id;
+                let update = await Aula.findByIdAndUpdate(id, aulOrder, {new: true});
+                if (!update) {
+                    return res.status(400).send({error: 'Aula não encontrado'});
+                }
+                aulaOrdem.push(update);
+            }
+
+            return res.send({aulaOrdem});
+        } catch (err) {
+            return res.status(400).send({error: 'Erro interno'});
+        }
     }
 
     public async delete(req: Request, res: Response): Promise<Response> {

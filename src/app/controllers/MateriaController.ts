@@ -60,10 +60,6 @@ class MateriaController {
 
             await Curso.findByIdAndUpdate(curso, cursoDB, {new: true});
 
-            // console.log(materia);
-            console.log(cursoMateria);
-            // console.log(cursoDB);
-
             return res.send({cursoMateria});
         } catch (err) {
             return res.status(400).send({error: 'Erro interno'});

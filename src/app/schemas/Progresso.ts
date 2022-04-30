@@ -5,7 +5,7 @@ interface ProgressoInterface extends Document {
     idaula: string;
     idmateria: string;
     idcurso: string;
-    idcandidato: boolean;
+    idcandidato: string;
     data?: Date;
 }
 

@@ -30,6 +30,17 @@ class CursoController {
 
     }
 
+    public async cursoIdMateria(req: Request, res: Response): Promise<Response> {
+        try {
+            const curso = await Curso.find({curso_materias: req.params.materiaId});
+
+            return res.send({curso});
+        } catch (err) {
+            return res.status(400).send({error: 'Erro interno'});
+        }
+
+    }
+
     public async create(req: Request, res: Response): Promise<Response> {
         try {
             const curso = await Curso.create(req.body);

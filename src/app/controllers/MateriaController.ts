@@ -32,7 +32,7 @@ class MateriaController {
     public async create(req: Request, res: Response): Promise<Response> {
         try {
             const {curso, ordem} = req.body;
-            if (!curso || ordem !== 0) {
+            if (!curso || ordem === undefined) {
                 return res.status(400).send({error: 'curso/ordem não informada'});
             }
 
@@ -41,7 +41,12 @@ class MateriaController {
             if (!cursoDB) {
                 return res.status(400).send({error: 'curso não encontrada'});
             }
-            const materia = await Materia.create(req.body);
+
+            const objMateria = req.body;
+            delete objMateria.curso;
+            objMateria.cursos = [curso];
+            // const materia = await Materia.create(req.body);
+            const materia = await Materia.create(objMateria);
 
             const obj = {
                 curso: curso,
@@ -52,12 +57,14 @@ class MateriaController {
             const cursoMateria = await Curso_Materia.create(obj);
 
             cursoDB.curso_materias.push(cursoMateria._id);
-            // console.log(cursoDB.materias);
 
             await Curso.findByIdAndUpdate(curso, cursoDB, {new: true});
 
-            return res.send({materia});
-            // return res.send({teste});
+            // console.log(materia);
+            console.log(cursoMateria);
+            // console.log(cursoDB);
+
+            return res.send({cursoMateria});
         } catch (err) {
             return res.status(400).send({error: 'Erro interno'});
         }

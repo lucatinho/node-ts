@@ -34,6 +34,28 @@ class CursoMateriaController {
         }
     }
 
+    public async editOrder(req: Request, res: Response): Promise<Response> {
+        try {
+            const {ordenacao} = req.body;
+            let cursoMateriasOrder: Array<any> = new Array<any>();
+
+            for await (let matOrder of ordenacao) {
+                const id = matOrder._id;
+                delete matOrder._id;
+                let update = await CursoMateria.findByIdAndUpdate(id, matOrder, {new: true});
+                if (!update) {
+                    return res.status(400).send({error: 'Materia não encontrado'});
+                }
+                cursoMateriasOrder.push(update);
+            }
+
+            return res.send({cursoMateriasOrder});
+        } catch (err) {
+            return res.status(400).send({error: 'Erro interno'});
+        }
+
+    }
+
     public async edit(req: Request, res: Response): Promise<Response> {
         try {
             const body = req.body;

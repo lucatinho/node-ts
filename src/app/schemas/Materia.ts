@@ -7,7 +7,7 @@ interface MateriaInterface extends Document {
     img: string;
     aulas: Array<any>;
     isActive: boolean;
-    curso: string;
+    cursos: Array<any>;
 }
 
 const MateriaSchema = new mongoose.Schema({
@@ -33,7 +33,7 @@ const MateriaSchema = new mongoose.Schema({
         require: true,
         default: false
     },
-    curso: {
+    cursos: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Curso',
         required: true

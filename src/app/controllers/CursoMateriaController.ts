@@ -1,6 +1,8 @@
 import {Request, Response} from "express";
 
 import CursoMateria from '../schemas/CursoMateria';
+import Curso from "../schemas/Curso";
+import Materia from "../schemas/Materia";
 
 class CursoMateriaController {
     public async list(req: Request, res: Response): Promise<Response> {
@@ -26,7 +28,11 @@ class CursoMateriaController {
 
     public async create(req: Request, res: Response): Promise<Response> {
         try {
+            const {curso, materia} = req.body;
+
             const cursoMateria = await CursoMateria.create(req.body);
+            await Curso.updateMany({_id: curso}, {$push: {curso_materias: cursoMateria._id}});
+            await Materia.updateMany({_id: materia}, {$push: {cursos: curso}})
 
             return res.send({cursoMateria});
         } catch (err) {
@@ -76,7 +82,17 @@ class CursoMateriaController {
 
     public async delete(req: Request, res: Response): Promise<Response> {
         try {
-            await CursoMateria.findByIdAndRemove(req.params.cursoMateriaId);
+            const {curso, materia} = req.body;
+
+            const materiaBase = await CursoMateria.find({curso: curso});
+
+            if (materiaBase[0]._id) {
+                await CursoMateria.findByIdAndRemove(materiaBase[0]._id);
+                await Curso.updateMany({_id: curso}, {$pull: {curso_materias: materiaBase[0]._id}});
+                await Materia.updateMany({_id: materia}, {$pull: {cursos: curso}})
+            } else {
+                return res.status(400).send({error: 'Vinculo não encontrado!'});
+            }
 
             return res.send({sucess: 'Removido com sucesso'});
         } catch (err) {

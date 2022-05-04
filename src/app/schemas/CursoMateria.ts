@@ -21,7 +21,8 @@ const CursoMateriaSchema = new mongoose.Schema({
     },
     ordem: {
         type: Number,
-        require: true
+        require: true,
+        default: 0
     },
     isActive: {
         type: Boolean,

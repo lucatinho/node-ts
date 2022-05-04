@@ -14,6 +14,6 @@ cursoMateria.get(`${route_fix}/:cursoMateriaId`, CursoMateriaController.cursoMat
 cursoMateria.post(`${route_fix}/`, CursoMateriaController.create);
 cursoMateria.put(`${route_fix}/order`, CursoMateriaController.editOrder);
 cursoMateria.put(`${route_fix}/:cursoMateriaId`, CursoMateriaController.edit);
-cursoMateria.delete(`${route_fix}/:cursoMateriaId`, authorize([Roles.ROLE_PARCAS]), CursoMateriaController.delete);
+cursoMateria.post(`${route_fix}/remove`, authorize([Roles.ROLE_PARCAS]), CursoMateriaController.delete);
 
 export default cursoMateria;

@@ -34,7 +34,7 @@ class EmailService {
             from: sendgridInfo.FROM, // Change to your verified sender
             subject: 'Vibranium - Recuperação de senha!',
             text: 'Recover Password',
-            html: `<a href="https://vibranium-alunos.parcas.com.br?token=${token}">Clique aqui para trocar sua senha</a>`,
+            html: `<a href="https://vibranium.parcas.com.br/reset-password/${token}">Clique aqui para trocar sua senha</a>`,
         }
     }
 }

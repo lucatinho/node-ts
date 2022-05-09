@@ -66,7 +66,7 @@ class UserController {
             const user = await User.findOne({email});
 
             if (!user) {
-                return res.status(400).send({error: 'Usuario nao encontrado'});
+                return res.status(200).send({error: 'Usuario nao encontrado'});
             }
 
             const token = crypto.randomBytes(20).toString('hex');
@@ -104,16 +104,16 @@ class UserController {
             const user = await User.findOne({email}).select('+passwordResetToken passwordResetExpires');
 
             if (!user) {
-                return res.status(400).send({error: 'Email not found'});
+                return res.status(200).send({error: 'Email not found'});
             }
 
             if (token !== user.passwordResetToken) {
-                return res.status(400).send({error: 'Token invalido'});
+                return res.status(200).send({error: 'Token invalido'});
             }
 
             const now = new Date();
             if (now > user.passwordResetExpires) {
-                return res.status(400).send({error: 'Token Expirou'});
+                return res.status(200).send({error: 'Token Expirou'});
             }
 
             user.password = password;

@@ -32,7 +32,7 @@ class CursoMateriaController {
 
             const cursoMateria = await CursoMateria.create(req.body);
             await Curso.updateMany({_id: curso}, {$push: {curso_materias: cursoMateria._id}});
-            await Materia.updateMany({_id: materia}, {$push: {cursos: curso}})
+            await Materia.updateMany({_id: materia}, {$push: {cursos: curso}});
 
             return res.send({cursoMateria});
         } catch (err) {

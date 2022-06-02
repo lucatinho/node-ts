@@ -5,6 +5,7 @@ import crypto from "crypto";
 
 const authConfig = require('../../config/auth.json');
 import User from '../schemas/User';
+import Turma from "../schemas/Turma";
 import EmailService from "../../services/EmailService";
 import sgMail from "@sendgrid/mail";
 
@@ -14,13 +15,23 @@ function generateToken(params = {}) {
 
 class UserController {
     public async register(req: Request, res: Response): Promise<Response> {
-        const {email} = req.body;
+        const {email, turma} = req.body;
         try {
             if (await User.findOne({email})) {
                 return res.status(400).send({error: 'Usuario ja existe'});
             }
+            let turmaDb = await Turma.findById(turma);
+            if (!turmaDb) {
+                return res.status(400).send({error: 'Turma não encontrada'});
+            }
 
             const user = await User.create(req.body);
+
+            if (turmaDb.users === undefined) {
+                turmaDb.users = new Array<any>();
+            }
+            turmaDb.users.push(user._id);
+            await Turma.findByIdAndUpdate(turma,turmaDb, {new: true});
 
             user.password = undefined!;
 

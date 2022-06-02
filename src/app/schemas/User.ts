@@ -12,6 +12,7 @@ interface UserInterface extends Document {
     passwordResetExpires: Date;
     isActive: boolean;
     createdAt?: Date;
+    turma?: string;
 
     fullName(): string;
 }
@@ -53,6 +54,10 @@ const UserSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    turma: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Turma'
     }
 });
 

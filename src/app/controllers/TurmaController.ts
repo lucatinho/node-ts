@@ -5,7 +5,10 @@ import Turma from '../schemas/Turma';
 class TurmaController {
     public async list(req: Request, res: Response): Promise<Response> {
         try {
-            const turmas = await Turma.find();
+            const turmas = await Turma.find().populate([{
+                path: 'cursos',
+                select: ['titulo']
+            }]);
 
             return res.send({turmas});
         } catch (err) {
@@ -18,9 +21,6 @@ class TurmaController {
             const turma = await Turma.findById(req.params.turmaId).populate([{
                 path: 'users',
                 select: ['name', 'email']
-            },{
-                path: 'cursos',
-                select: ['titulo']
             }]);
 
             return res.send({turma});

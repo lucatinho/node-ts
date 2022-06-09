@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 interface TurmaInterface extends Document {
     nome: string;
     cursos: Array<any>;
-    qtdAulas?: Number;
     isActive: boolean;
     start?: Date;
     finish?: Date;
@@ -21,10 +20,6 @@ const TurmaSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Curso',
         required: true
-    },
-    qtdAulas: {
-        type: Number,
-        default: 0
     },
     isActive: {
         type: Boolean,

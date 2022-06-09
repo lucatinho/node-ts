@@ -29,6 +29,37 @@ class ProgressoController {
             req.body.idcandidato = req.userId;
             const progresso = await Progresso.create(req.body);
 
+            // const progressoTurmaUniq = await TurmaProgresso.findOne({user: req.userId});
+
+            // if (progressoTurmaUniq) {
+            //     console.log(progressoTurmaUniq);
+            //     // const body = {
+            //     //     user: req.userId,
+            //     //     turma: req.body.turma,
+            //     //     progress: [
+            //     //         {
+            //     //             curso: req.body.idcurso,
+            //     //             qtdAulaView: req.body.qtdAulaView,
+            //     //             atrasado: false
+            //     //         }
+            //     //     ]
+            //     // }
+            //     // await TurmaProgresso.create(body);
+            // } else {
+            //     const body = {
+            //         user: req.userId,
+            //         turma: req.body.turma,
+            //         progress: [
+            //             {
+            //                 curso: req.body.idcurso,
+            //                 qtdAulaView: req.body.qtdAulaView,
+            //                 atrasado: false
+            //             }
+            //         ]
+            //     }
+            //     await TurmaProgresso.create(body);
+            // }
+
             return res.send({progresso});
         } catch (err) {
             return res.status(400).send({error: 'Erro interno'});

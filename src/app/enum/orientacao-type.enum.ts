@@ -1,0 +1,8 @@
+export enum OrientacaoType {
+    HETEROSSEXUAL,
+    HOMOSSEXUAL,
+    BISSEXUAL,
+    ASSEXUAL,
+    PREFIRO_NAO_DECLARAR,
+    OUTROS
+}

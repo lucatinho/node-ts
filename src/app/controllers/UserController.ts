@@ -3,36 +3,86 @@ import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
-const authConfig = require('../../config/auth.json');
 import User from '../schemas/User';
 import Turma from "../schemas/Turma";
 import EmailService from "../../services/EmailService";
 import sgMail from "@sendgrid/mail";
+import InfoPerson from "../schemas/InfoPerson";
+import Endereco from "../schemas/Endereco";
 
 function generateToken(params = {}) {
-    return jwt.sign(params, authConfig.secret, {expiresIn: 64800});
+    return jwt.sign(params, 'c61aac68ee4d04dd8b272d1ef3740adf', {expiresIn: 64800});
 }
 
 class UserController {
-    public async register(req: Request, res: Response): Promise<Response> {
-        const {email, turma} = req.body;
+    public async register_user_content_info_person(req: Request, res: Response): Promise<Response> {
+        const {email, turma, cpf, infoPerson} = req.body;
         try {
+
+            /* verify -> email */
             if (await User.findOne({email})) {
                 return res.status(400).send({error: 'Usuario ja existe'});
             }
+            /* verify -> CPF */
+            if (await InfoPerson.findOne({cpf})) {
+                return res.status(400).send({error: 'Usuario ja existe'});
+            }
+            /* verify -> Turma */
             let turmaDb = await Turma.findById(turma);
             if (!turmaDb) {
                 return res.status(400).send({error: 'Turma não encontrada'});
             }
+            /* ! verify */
 
-            const user = await User.create(req.body);
+            /* Save Info Person */
+            let enderecoTemp = infoPerson.endereco;
+            delete infoPerson.endereco;
+            let infoPersonReq = await InfoPerson.create(infoPerson);
 
+            /* Save Endereco -> esta salvando somente o primeiro endereco*/
+            enderecoTemp[0].user = infoPersonReq._id;
+            const endereco = await Endereco.create(enderecoTemp[0]);
+
+            /* Vincular Endereco -> InfoPerson */
+            if (infoPersonReq.endereco === undefined) {
+                infoPersonReq.endereco = new Array<any>();
+            }
+            infoPersonReq.endereco.push(endereco._id);
+            await InfoPerson.findByIdAndUpdate(infoPersonReq._id, infoPersonReq, {new: true});
+
+            /* Save User */
+            let objUser = req.body;
+            objUser.infoPerson = infoPersonReq._id;
+            const user = await User.create(objUser);
+
+            /* Atualizar turma */
             if (turmaDb.users === undefined) {
                 turmaDb.users = new Array<any>();
             }
             turmaDb.users.push(user._id);
-            await Turma.findByIdAndUpdate(turma,turmaDb, {new: true});
+            await Turma.findByIdAndUpdate(turma, turmaDb, {new: true});
 
+            /* Retorno */
+            user.password = undefined!;
+
+            return res.send({user, token: generateToken({id: user.id})});
+        } catch (err) {
+            return res.status(400).send({error: 'Falha no registro'});
+        }
+    }
+
+    public async register_user_adm(req: Request, res: Response): Promise<Response> {
+        const {email} = req.body;
+        try {
+            /* verify -> email */
+            if (await User.findOne({email})) {
+                return res.status(400).send({error: 'Usuario ja existe'});
+            }
+            /* ! verify */
+
+            /* Save User */
+            const user = await User.create(req.body);
+            /* Retorno */
             user.password = undefined!;
 
             return res.send({user, token: generateToken({id: user.id})});

@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '.', '-t', 'gcr.io/trans-name-352818/vibranium:${TAG_NAME}']
+  env:
+  - 'TAG_NAME=$TAG_NAME'
+images:
+  - "gcr.io/trans-name-352818/vibranium:${TAG_NAME}"

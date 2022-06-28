@@ -55,6 +55,10 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    infoPerson: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'InfoPerson'
+    },
     turma: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Turma'

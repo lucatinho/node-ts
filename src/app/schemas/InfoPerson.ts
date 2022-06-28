@@ -15,6 +15,7 @@ interface InfoPersonInterface extends Document {
     sobrenome: string;
     email: string;
     cpf: string;
+    rg: string;
     data_nascimento: Date;
 
     endereco: Array<any>;
@@ -23,17 +24,18 @@ interface InfoPersonInterface extends Document {
     linkedin: string;
     facebook: string;
     instagram: string;
-    twitter: string;
     github: string;
 
-    escolaridade: number;
-    genero: number;
-    etnia: number;
-    orientacao: number;
-    renda: number;
-    empregado: number;
-    estado_civil: number;
-    qtd_filhos: number;
+    estado_civil: EstadoCivilType;
+    genero: GeneroType;
+    escolaridade: EscolaridadeType;
+
+    etnia: EtniaType;
+    orientacao: OrientacaoType;
+    renda: RendaType;
+    empregado: EmpregadoType;
+
+    qtd_filhos: QtdFilhosType;
 }
 
 const InfoPersonSchema = new mongoose.Schema({
@@ -71,9 +73,6 @@ const InfoPersonSchema = new mongoose.Schema({
         type: String,
     },
     instagram: {
-        type: String,
-    },
-    twitter: {
         type: String,
     },
     github: {

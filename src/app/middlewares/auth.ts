@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from "express";
 import jwt from "jsonwebtoken";
 
-const authConfig = require('../../config/auth.json');
+// const authConfig = require('../../config/auth.json');
 
 
 module.exports = (req: Request | any, res: Response, next: NextFunction) => {
@@ -22,7 +22,7 @@ module.exports = (req: Request | any, res: Response, next: NextFunction) => {
         return res.status(401).send({error: 'Token mal formatado'});
     }
 
-    jwt.verify(token, authConfig.secret, (err: any, decode: any) => {
+    jwt.verify(token, 'c61aac68ee4d04dd8b272d1ef3740adf', (err: any, decode: any) => {
         if (err) {
             return res.status(401).send({error: 'Token invalido'});
         }

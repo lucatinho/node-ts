@@ -1,6 +1,5 @@
 import sgMail, { MailDataRequired } from "@sendgrid/mail";
 
-const sendgridInfo = require('../config/sgMail.json');
 
 // interface IMailTo {
 //     name: string;
@@ -27,11 +26,11 @@ const sendgridInfo = require('../config/sgMail.json');
 
 class EmailService {
     sendMail_forgot_password(email: string, token: string): MailDataRequired {
-        sgMail.setApiKey(sendgridInfo.SENDGRID_API_KEY);
+        sgMail.setApiKey('');
 
         return {
             to: email, // Change to your recipient
-            from: sendgridInfo.FROM, // Change to your verified sender
+            from: 'bancodealunos@gmail.com', // Change to your verified sender
             subject: 'Vibranium - Recuperação de senha!',
             text: 'Recover Password',
             html: `<a href="https://vibranium.parcas.com.br/reset-password/${token}">Clique aqui para trocar sua senha</a>`,

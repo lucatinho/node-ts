@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 
 import Turma from '../schemas/Turma';
+import mongoose from "mongoose";
 
 class TurmaController {
     public async list(req: Request, res: Response): Promise<Response> {
@@ -26,6 +27,22 @@ class TurmaController {
             return res.send({turma});
         } catch (err) {
             return res.status(400).send({error: 'Erro interno'});
+        }
+
+    }
+
+    public async turmaIdverify(req: Request, res: Response): Promise<Response> {
+        try {
+            if (!mongoose.Types.ObjectId.isValid(req.params.turmaId)) {
+                return res.status(400).send({error: 'Codigo de turma invalido.'});
+            }
+            const turma = await Turma.findById(req.params.turmaId);
+            if (!turma) {
+                return res.status(400).send({error: 'Turma não existe.'});
+            }
+            return res.send({nome: turma.nome});
+        } catch (err) {
+            return res.status(400).send({error: 'Turma não encontrada.'});
         }
 
     }

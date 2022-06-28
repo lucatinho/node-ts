@@ -71,7 +71,7 @@ class UserController {
         }
     }
 
-    public async register_user_adm(req: Request, res: Response): Promise<Response> {
+    public async register_not_infoperson(req: Request, res: Response): Promise<Response> {
         const {email} = req.body;
         try {
             /* verify -> email */

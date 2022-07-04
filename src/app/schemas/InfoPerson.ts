@@ -6,36 +6,38 @@ import {GeneroType} from "../enum/genero-type.enum";
 import {EtniaType} from "../enum/etnia-type.enum";
 import {OrientacaoType} from "../enum/orientacao-type.enum";
 import {RendaType} from "../enum/renda-type.enum";
-import {EmpregadoType} from "../enum/empregado-type.enum";
+import {ExperienciaProfissionalType} from "../enum/experiencia_profissional-type.enum";
 import {EstadoCivilType} from "../enum/estadoCivil-type.enum";
 import {QtdFilhosType} from "../enum/qtdFilhos-type.enum";
 
 interface InfoPersonInterface extends Document {
-    nome: string;
-    sobrenome: string;
-    email: string;
-    cpf: string;
-    rg: string;
+    nome: String;
+    sobrenome: String;
+    email: String;
+    cpf: String;
+    rg: String;
     data_nascimento: Date;
 
     endereco: Array<any>;
 
-    celular: string;
-    linkedin: string;
-    facebook: string;
-    instagram: string;
-    github: string;
+    celular: String;
+    linkedin: String;
+    facebook: String;
+    instagram: String;
+    github: String;
 
     estado_civil: EstadoCivilType;
     genero: GeneroType;
+    etnia: EtniaType;
     escolaridade: EscolaridadeType;
 
-    etnia: EtniaType;
-    orientacao: OrientacaoType;
-    renda: RendaType;
-    empregado: EmpregadoType;
+    experiencia_profissional: ExperienciaProfissionalType;
+    beneficio_social: number;
 
-    qtd_filhos: QtdFilhosType;
+    // informacoes_sociais: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'InfoPersonSociais'
+    // }
 }
 
 const InfoPersonSchema = new mongoose.Schema({
@@ -105,7 +107,7 @@ const InfoPersonSchema = new mongoose.Schema({
     },
     empregado: {
         type: Number,
-        enum: EmpregadoType,
+        enum: ExperienciaProfissionalType,
         require: true
     },
     estado_civil: {
@@ -122,7 +124,14 @@ const InfoPersonSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Endereco'
     },
-
+    informacoes_sociais: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'InfoPersonSociais'
+    },
+    informacoes_de_personalidade: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'InfoPersonPersonalidade'
+    }
 });
 
 

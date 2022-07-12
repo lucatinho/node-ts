@@ -30,7 +30,7 @@ class App {
 
     database(): void {
         mongoose.connect('mongodb://localhost/vibranium');
-        // mongoose.connect('mongodb+srv://vibranium:L9XDa9bdKtTyBYkA@cluster0.shpnq.mongodb.net/?retryWrites=true&w=majority');
+        // mongoose.connect('mongodb+srv://vibranium:Sy4UwPwIyrr2FcSa@cluster0.trwz4bp.mongodb.net/?retryWrites=true&w=majority');
     }
 
     private routes(): void {

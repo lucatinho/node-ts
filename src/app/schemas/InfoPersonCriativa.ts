@@ -21,6 +21,7 @@ interface InfoPersonCriativaInterface extends Document {
     incomodo: IncomodoType;
     gratidao: GratidaoType;
     lembrado: LembradoType;
+    inforPerson: Object;
 }
 
 const InfoPersonCriativaSchema = new mongoose.Schema({

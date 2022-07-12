@@ -19,6 +19,7 @@ interface InfoPersonPersonalidadeInterface extends Document {
     importancia_da_formacao: ImportanciaEscolhidoType;
     sou_mais: SouMaisType;
     sou_menos: SouPoucoType;
+    inforPerson: Object;
 }
 
 const InfoPersonPersonalidadeSchema = new mongoose.Schema({

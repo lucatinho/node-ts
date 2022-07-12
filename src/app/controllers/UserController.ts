@@ -9,6 +9,10 @@ import EmailService from "../../services/EmailService";
 import sgMail from "@sendgrid/mail";
 import InfoPerson from "../schemas/InfoPerson";
 import Endereco from "../schemas/Endereco";
+import InfoPersonSociais from "../schemas/InfoPersonSociais";
+import InfoPersonPersonalidade from "../schemas/InfoPersonPersonalidade";
+import InfoPersonTecnico from "../schemas/InfoPersonTecnico";
+import InfoPersonCriativa from "../schemas/InfoPersonCriativa";
 
 function generateToken(params = {}) {
     return jwt.sign(params, 'c61aac68ee4d04dd8b272d1ef3740adf', {expiresIn: 64800});
@@ -16,16 +20,17 @@ function generateToken(params = {}) {
 
 class UserController {
     public async register_user_content_info_person(req: Request, res: Response): Promise<Response> {
-        const {email, turma, cpf, infoPerson} = req.body;
+        const {email, turma, infoPerson} = req.body;
         try {
 
             /* verify -> email */
             if (await User.findOne({email})) {
-                return res.status(400).send({error: 'Usuario ja existe'});
+                return res.status(400).send({error: 'Email ja existe'});
             }
-            /* verify -> CPF */
-            if (await InfoPerson.findOne({cpf})) {
-                return res.status(400).send({error: 'Usuario ja existe'});
+            /* verify -> CPF/RG */
+            const validationCpf: Array<any> = await InfoPerson.find({cpf: infoPerson.cpf});
+            if (validationCpf.length) {
+                return res.status(400).send({error: 'CPF ja existe'});
             }
             /* verify -> Turma */
             let turmaDb = await Turma.findById(turma);
@@ -36,18 +41,48 @@ class UserController {
 
             /* Save Info Person */
             let enderecoTemp = infoPerson.endereco;
+            let sociaisTemp = infoPerson.informacoes_sociais;
+            let personalidadeTemp = infoPerson.informacoes_de_personalidade;
+            let tecnicaTemp = infoPerson.informacoes_tecnicas;
+            let criativoTemp = infoPerson.informacoes_criativas;
+
             delete infoPerson.endereco;
+            delete infoPerson.informacoes_sociais;
+            delete infoPerson.informacoes_de_personalidade;
+            delete infoPerson.informacoes_tecnicas;
+            delete infoPerson.informacoes_criativas;
+
             let infoPersonReq = await InfoPerson.create(infoPerson);
 
             /* Save Endereco -> esta salvando somente o primeiro endereco*/
             enderecoTemp[0].user = infoPersonReq._id;
             const endereco = await Endereco.create(enderecoTemp[0]);
-
-            /* Vincular Endereco -> InfoPerson */
             if (infoPersonReq.endereco === undefined) {
                 infoPersonReq.endereco = new Array<any>();
             }
             infoPersonReq.endereco.push(endereco._id);
+
+            /* Salvar dados sociais */
+            sociaisTemp.inforPerson = infoPersonReq._id;
+            const infoPersonSociais = await InfoPersonSociais.create(sociaisTemp);
+            infoPersonReq.informacoes_sociais = infoPersonSociais._id;
+
+            /* Salvar dados de personalidade */
+            personalidadeTemp.inforPerson = infoPersonReq._id;
+            const infoPersonPersonalidade = await InfoPersonPersonalidade.create(personalidadeTemp);
+            infoPersonReq.informacoes_de_personalidade = infoPersonPersonalidade._id;
+
+            /* Salvar dados tecnicos */
+            tecnicaTemp.inforPerson = infoPersonReq._id;
+            const infoPersonTecnico = await InfoPersonTecnico.create(tecnicaTemp);
+            infoPersonReq.informacoes_tecnicas = infoPersonTecnico._id;
+
+            /* Salvar dados sociais */
+            criativoTemp.inforPerson = infoPersonReq._id;
+            const infoPersonCriativa = await InfoPersonCriativa.create(criativoTemp);
+            infoPersonReq.informacoes_criativas = infoPersonCriativa._id;
+
+            /* Sincronizar InfoPerson */
             await InfoPerson.findByIdAndUpdate(infoPersonReq._id, infoPersonReq, {new: true});
 
             /* Save User */

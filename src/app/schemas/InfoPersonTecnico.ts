@@ -17,6 +17,7 @@ interface InfoPersonTecnicoInterface extends Document {
     memoria: MemoriaType;
     tempo_formacao: TempoFormacaoType;
     conhecimento_informatica: DominioInformaticaType;
+    inforPerson: Object;
 }
 
 const InfoPersonTecnicoSchema = new mongoose.Schema({

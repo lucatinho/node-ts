@@ -1,0 +1,6 @@
+export enum SouMaisType {
+  PROATIVO,
+  CRIATIVO,
+  DETERMINADO,
+  NENHUMA_DAS_ALTERNATIVAS
+}

@@ -1,0 +1,6 @@
+export enum ProvedorType {
+  PROVEDOR,
+  DEPENDENTE,
+  AMBOS,
+  NENHUMA_DAS_ALTERNATIVAS
+}

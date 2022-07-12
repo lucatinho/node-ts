@@ -1,0 +1,6 @@
+export enum InteresseType {
+  HISTORIA,
+  TECNOLOGIA,
+  ARTES,
+  NENHUMA_DAS_ALTERNATIVAS
+}

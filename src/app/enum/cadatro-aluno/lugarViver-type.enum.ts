@@ -1,0 +1,7 @@
+export enum LugarViverType{
+  PRAIA,
+  CAMPO,
+  METROPOLE,
+  TODAS_ALTERNATIVAS,
+  NENHUMA_ALTERNATIVA
+}

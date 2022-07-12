@@ -1,14 +1,12 @@
 import {model, Document} from 'mongoose';
 import mongoose from "mongoose";
 
-import {EscolaridadeType} from "../enum/escolaridade-type.enum";
-import {GeneroType} from "../enum/genero-type.enum";
-import {EtniaType} from "../enum/etnia-type.enum";
-import {OrientacaoType} from "../enum/orientacao-type.enum";
-import {RendaType} from "../enum/renda-type.enum";
-import {ExperienciaProfissionalType} from "../enum/experiencia_profissional-type.enum";
-import {EstadoCivilType} from "../enum/estadoCivil-type.enum";
-import {QtdFilhosType} from "../enum/qtdFilhos-type.enum";
+import {BeneficioSocialType} from "../enum/cadatro-aluno/beneficioSocial-type.enum";
+import {EstadoCivilType} from "../enum/cadatro-aluno/estadoCivil-type.enum";
+import {GeneroType} from "../enum/cadatro-aluno/genero-type.enum";
+import {EtniaType} from "../enum/cadatro-aluno/etnia-type.enum";
+import {EscolaridadeType} from "../enum/cadatro-aluno/escolaridade-type.enum";
+import {ExperienciaProfissionalType} from "../enum/cadatro-aluno/experiencia_profissional-type.enum";
 
 interface InfoPersonInterface extends Document {
     nome: String;
@@ -18,7 +16,12 @@ interface InfoPersonInterface extends Document {
     rg: String;
     data_nascimento: Date;
 
-    endereco: Array<any>;
+    estado_civil: EstadoCivilType;
+    genero: GeneroType;
+    etnia: EtniaType;
+    escolaridade: EscolaridadeType;
+    experiencia_profissional: ExperienciaProfissionalType;
+    beneficio_social: BeneficioSocialType;
 
     celular: String;
     linkedin: String;
@@ -26,18 +29,11 @@ interface InfoPersonInterface extends Document {
     instagram: String;
     github: String;
 
-    estado_civil: EstadoCivilType;
-    genero: GeneroType;
-    etnia: EtniaType;
-    escolaridade: EscolaridadeType;
-
-    experiencia_profissional: ExperienciaProfissionalType;
-    beneficio_social: number;
-
-    // informacoes_sociais: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'InfoPersonSociais'
-    // }
+    endereco: Array<any>;
+    informacoes_sociais: Object;
+    informacoes_de_personalidade: Object;
+    informacoes_tecnicas: Object;
+    informacoes_criativas: Object;
 }
 
 const InfoPersonSchema = new mongoose.Schema({
@@ -60,8 +56,43 @@ const InfoPersonSchema = new mongoose.Schema({
         unique: true,
         require: true
     },
+    rg: {
+        type: String,
+        unique: true,
+        require: true
+    },
     data_nascimento: {
         type: Date,
+        require: true
+    },
+    estado_civil: {
+        type: Number,
+        enum: EstadoCivilType,
+        require: true
+    },
+    genero: {
+        type: Number,
+        enum: GeneroType,
+        require: true
+    },
+    etnia: {
+        type: Number,
+        enum: EtniaType,
+        require: true
+    },
+    escolaridade: {
+        type: Number,
+        enum: EscolaridadeType,
+        require: true
+    },
+    experiencia_profissional: {
+        type: Number,
+        enum: ExperienciaProfissionalType,
+        require: true
+    },
+    beneficio_social: {
+        type: Number,
+        enum: BeneficioSocialType,
         require: true
     },
     celular: {
@@ -80,46 +111,6 @@ const InfoPersonSchema = new mongoose.Schema({
     github: {
         type: String,
     },
-    escolaridade: {
-        type: Number,
-        enum: EscolaridadeType,
-        require: true
-    },
-    genero: {
-        type: Number,
-        enum: GeneroType,
-        require: true
-    },
-    etnia: {
-        type: Number,
-        enum: EtniaType,
-        require: true
-    },
-    orientacao: {
-        type: Number,
-        enum: OrientacaoType,
-        require: true
-    },
-    renda: {
-        type: Number,
-        enum: RendaType,
-        require: true
-    },
-    empregado: {
-        type: Number,
-        enum: ExperienciaProfissionalType,
-        require: true
-    },
-    estado_civil: {
-        type: Number,
-        enum: EstadoCivilType,
-        require: true
-    },
-    qtd_filhos: {
-        type: Number,
-        enum: QtdFilhosType,
-        require: true
-    },
     endereco: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Endereco'
@@ -131,6 +122,14 @@ const InfoPersonSchema = new mongoose.Schema({
     informacoes_de_personalidade: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'InfoPersonPersonalidade'
+    },
+    informacoes_tecnicas: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'InfoPersonTecnico'
+    },
+    informacoes_criativas: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'InfoPersonCriativa'
     }
 });
 

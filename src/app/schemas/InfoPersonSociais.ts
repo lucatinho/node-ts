@@ -1,33 +1,77 @@
 import {model, Document} from 'mongoose';
 import mongoose from "mongoose";
 
-import {EscolaridadeType} from "../enum/escolaridade-type.enum";
-import {GeneroType} from "../enum/genero-type.enum";
-import {EtniaType} from "../enum/etnia-type.enum";
-import {OrientacaoType} from "../enum/orientacao-type.enum";
-import {RendaType} from "../enum/renda-type.enum";
-import {ExperienciaProfissionalType} from "../enum/experiencia_profissional-type.enum";
-import {EstadoCivilType} from "../enum/estadoCivil-type.enum";
-import {QtdFilhosType} from "../enum/qtdFilhos-type.enum";
+import {Numero05Type} from "../enum/cadatro-aluno/numero05-type.enum";
+import {ProvedorType} from "../enum/cadatro-aluno/provedor-type.enum";
+import {SituacaoResidenciaType} from "../enum/cadatro-aluno/situacaoResidencia-type.enum";
+import {ResidenciaType} from "../enum/cadatro-aluno/residencia-type.enum";
+import {ConstrucaoResidenciaType} from "../enum/cadatro-aluno/construcaoResidencia-type.enum";
+import {ResidenciaPossuiType} from "../enum/cadatro-aluno/residenciaPossui-type.enum";
+import {RendaType} from "../enum/cadatro-aluno/renda-type.enum";
 
 interface InfoPersonSociaisInterface extends Document {
-    dependentes: Number;
-    qtd_pessoas_que_moram_junto: Number;
-    tipo_residencia: Number;
-    situacao_residencia: Number;
-    construcao_residencia: Number;
-    residencia_possui: Number;
-    provedor: Number;
-    desempregados: Number;
+    dependentes: Numero05Type;
+    qtd_pessoas_que_moram_junto: Numero05Type;
+    tipo_residencia: ResidenciaType;
+    situacao_residencia: SituacaoResidenciaType;
+    construcao_residencia: ConstrucaoResidenciaType;
+    residencia_possui: ResidenciaPossuiType;
+    provedor: ProvedorType;
+    desempregados: Numero05Type;
     renda: RendaType;
+    inforPerson: Object;
 }
 
 const InfoPersonSociaisSchema = new mongoose.Schema({
-    endereco: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Endereco'
+    dependentes: {
+        type: Number,
+        enum: Numero05Type,
+        require: true
     },
-
+    qtd_pessoas_que_moram_junto: {
+        type: Number,
+        enum: Numero05Type,
+        require: true
+    },
+    tipo_residencia: {
+        type: Number,
+        enum: ResidenciaType,
+        require: true
+    },
+    situacao_residencia: {
+        type: Number,
+        enum: SituacaoResidenciaType,
+        require: true
+    },
+    construcao_residencia: {
+        type: Number,
+        enum: ConstrucaoResidenciaType,
+        require: true
+    },
+    residencia_possui: {
+        type: Number,
+        enum: ResidenciaPossuiType,
+        require: true
+    },
+    provedor: {
+        type: Number,
+        enum: ProvedorType,
+        require: true
+    },
+    desempregados: {
+        type: Number,
+        enum: Numero05Type,
+        require: true
+    },
+    renda: {
+        type: Number,
+        enum: RendaType,
+        require: true
+    },
+    inforPerson: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'InfoPerson'
+    }
 });
 
 

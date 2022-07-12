@@ -1,0 +1,6 @@
+export enum FamiliaType {
+  CONSERVADORA,
+  LIBERAL,
+  AUSENTE,
+  NENHUMA_DAS_ALTERNATIVAS,
+}

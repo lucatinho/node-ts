@@ -1,0 +1,6 @@
+export enum SucessoType {
+  SER_RECONHECIDO,
+  SER_INDEPENDENTE,
+  SER_RICO,
+  NENHUMA_DAS_ALTERNATIVAS,
+}

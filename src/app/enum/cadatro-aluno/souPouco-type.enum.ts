@@ -1,0 +1,6 @@
+export enum SouPoucoType {
+  PACIENTE,
+  FOCADO,
+  COMPROMETIDO,
+  NENHUMA_DAS_ALTERNATIVAS
+}

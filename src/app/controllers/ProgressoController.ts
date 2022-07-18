@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 
 import Progresso from '../schemas/Progresso';
+import TurmaProgresso from "../schemas/TurmaProgresso";
 
 class ProgressoController {
     public async list(req: Request, res: Response): Promise<Response> {
@@ -26,39 +27,45 @@ class ProgressoController {
 
     public async create(req: Request | any, res: Response): Promise<Response> {
         try {
-            req.body.idcandidato = req.userId;
-            const progresso = await Progresso.create(req.body);
+            if (req.body.progresso_geral.qtdAulaView === undefined) {
+                return res.status(400).send({error: 'Informe a quantidade de aulas assistidas'});
+            }
 
-            // const progressoTurmaUniq = await TurmaProgresso.findOne({user: req.userId});
+            req.body.progresso_unico.idcandidato = req.userId;
+            const progresso = await Progresso.create(req.body.progresso_unico);
 
-            // if (progressoTurmaUniq) {
-            //     console.log(progressoTurmaUniq);
-            //     // const body = {
-            //     //     user: req.userId,
-            //     //     turma: req.body.turma,
-            //     //     progress: [
-            //     //         {
-            //     //             curso: req.body.idcurso,
-            //     //             qtdAulaView: req.body.qtdAulaView,
-            //     //             atrasado: false
-            //     //         }
-            //     //     ]
-            //     // }
-            //     // await TurmaProgresso.create(body);
-            // } else {
-            //     const body = {
-            //         user: req.userId,
-            //         turma: req.body.turma,
-            //         progress: [
-            //             {
-            //                 curso: req.body.idcurso,
-            //                 qtdAulaView: req.body.qtdAulaView,
-            //                 atrasado: false
-            //             }
-            //         ]
-            //     }
-            //     await TurmaProgresso.create(body);
-            // }
+            let progressoTurmaUniq = await TurmaProgresso.findOne({user: req.userId});
+
+            const body = {
+                user: req.userId,
+                turma: req.body.progresso_geral.idturma,
+                progress: [
+                    {
+                        curso: req.body.progresso_unico.idcurso,
+                        qtdAulaView: req.body.progresso_geral.qtdAulaView
+                    }
+                ]
+            }
+            // Se progresso existir
+            if (progressoTurmaUniq) {
+                // inicia o progress
+                if (!progressoTurmaUniq.progress) {
+                    progressoTurmaUniq.progress = [];
+                }
+                const valorExistente = progressoTurmaUniq.progress?.find(progress => String(progress.curso) === req.body.progresso_unico.idcurso);
+                //se progress existir
+                if (valorExistente) {
+                    const index = progressoTurmaUniq.progress?.indexOf(valorExistente);
+                    progressoTurmaUniq.progress[index].qtdAulaView = req.body.progresso_geral.qtdAulaView;
+                } else {
+                    console.log(progressoTurmaUniq);
+                    progressoTurmaUniq.progress.push(body.progress[0]);
+                }
+                console.log(progressoTurmaUniq);
+                await TurmaProgresso.findByIdAndUpdate(progressoTurmaUniq._id, progressoTurmaUniq, {new: true});
+            } else {
+                await TurmaProgresso.create(body);
+            }
 
             return res.send({progresso});
         } catch (err) {

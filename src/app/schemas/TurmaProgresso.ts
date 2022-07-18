@@ -9,8 +9,7 @@ interface TurmaProgressoInterface extends Document {
 
 interface Progress {
     curso: string,
-    qtdAulaView: number,
-    atrasado: boolean
+    qtdAulaView: number
 }
 
 const TurmaProgressoSchema = new mongoose.Schema({
@@ -33,10 +32,6 @@ const TurmaProgressoSchema = new mongoose.Schema({
             qtdAulaView: {
                 type: Number,
                 default: 0
-            },
-            atrasado: {
-                type: Boolean,
-                default: false
             }
         }
     ]

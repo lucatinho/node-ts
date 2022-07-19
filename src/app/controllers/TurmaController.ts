@@ -34,11 +34,11 @@ class TurmaController {
     public async turmaIdverify(req: Request, res: Response): Promise<Response> {
         try {
             if (!mongoose.Types.ObjectId.isValid(req.params.turmaId)) {
-                return res.status(400).send({error: 'Codigo de turma invalido.'});
+                return res.status(204).send({error: 'Codigo de turma invalido.'});
             }
             const turma = await Turma.findById(req.params.turmaId);
             if (!turma) {
-                return res.status(400).send({error: 'Turma não existe.'});
+                return res.status(204).send({error: 'Turma não existe.'});
             }
             return res.send({nome: turma.nome});
         } catch (err) {

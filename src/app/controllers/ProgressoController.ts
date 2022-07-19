@@ -58,7 +58,6 @@ class ProgressoController {
                     const index = progressoTurmaUniq.progress?.indexOf(valorExistente);
                     progressoTurmaUniq.progress[index].qtdAulaView = req.body.progresso_geral.qtdAulaView;
                 } else {
-                    console.log(progressoTurmaUniq);
                     progressoTurmaUniq.progress.push(body.progress[0]);
                 }
                 console.log(progressoTurmaUniq);

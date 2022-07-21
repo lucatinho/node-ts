@@ -22,7 +22,7 @@ class TurmaController {
             const turma = await Turma.findById(req.params.turmaId).populate([{
                 path: 'users',
                 select: ['name', 'email']
-            }]);
+            }]).populate({path: 'cursos', select: ['titulo']});
 
             return res.send({turma});
         } catch (err) {

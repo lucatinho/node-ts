@@ -25,6 +25,21 @@ class ProgressoController {
 
     }
 
+    public async progressoTurma(req: Request, res: Response): Promise<Response> {
+        try {
+            const progresso = await TurmaProgresso.find({turma: req.params.id}).populate({
+                path: 'user',
+                select: ['name', 'isActive', 'infoPerson']
+            });
+
+            return res.send({progresso});
+        } catch (err) {
+            return res.status(400).send({error: 'Erro interno'});
+        }
+
+    }
+
+
     public async create(req: Request | any, res: Response): Promise<Response> {
         try {
             if (req.body.progresso_geral.qtdAulaView === undefined) {

@@ -19,7 +19,7 @@ const TurmaProgressoSchema = new mongoose.Schema({
     },
     turma: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'TurmaProgresso',
+        ref: 'Turma',
         required: true
     },
     progress: [

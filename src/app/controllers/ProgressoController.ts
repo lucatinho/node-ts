@@ -57,7 +57,8 @@ class ProgressoController {
                 progress: [
                     {
                         curso: req.body.progresso_unico.idcurso,
-                        qtdAulaView: req.body.progresso_geral.qtdAulaView
+                        qtdAulaView: req.body.progresso_geral.qtdAulaView,
+                        date: Date.now()
                     }
                 ]
             }
@@ -75,7 +76,7 @@ class ProgressoController {
                 } else {
                     progressoTurmaUniq.progress.push(body.progress[0]);
                 }
-                console.log(progressoTurmaUniq);
+                // console.log(progressoTurmaUniq);
                 await TurmaProgresso.findByIdAndUpdate(progressoTurmaUniq._id, progressoTurmaUniq, {new: true});
             } else {
                 await TurmaProgresso.create(body);

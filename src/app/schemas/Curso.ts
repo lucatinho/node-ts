@@ -5,6 +5,7 @@ interface CursoInterface extends Document {
     titulo: string;
     subtitulo: string;
     img: string;
+    qtdAulas: number;
     isActive: boolean;
     ordem: number;
     createdAt?: Date;
@@ -23,6 +24,10 @@ const CursoSchema = new mongoose.Schema({
     },
     img: {
         type: String,
+        require: true
+    },
+    qtdAulas: {
+        type: Number,
         require: true
     },
     isActive: {

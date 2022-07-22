@@ -32,6 +32,10 @@ const TurmaProgressoSchema = new mongoose.Schema({
             qtdAulaView: {
                 type: Number,
                 default: 0
+            },
+            date: {
+                type: Date,
+                default: Date.now
             }
         }
     ]

@@ -29,6 +29,8 @@ interface InfoPersonInterface extends Document {
     instagram: String;
     github: String;
 
+    createdAt?: Date;
+
     endereco: Array<any>;
     informacoes_sociais: Object;
     informacoes_de_personalidade: Object;
@@ -110,6 +112,10 @@ const InfoPersonSchema = new mongoose.Schema({
     },
     github: {
         type: String,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
     endereco: {
         type: [mongoose.Schema.Types.ObjectId],

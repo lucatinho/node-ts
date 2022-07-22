@@ -21,8 +21,8 @@ class TurmaController {
         try {
             const turma = await Turma.findById(req.params.turmaId).populate([{
                 path: 'users',
-                select: ['name', 'email']
-            }]).populate({path: 'cursos', select: ['titulo']});
+                select: ['name', 'email', 'infoPerson']
+            }]).populate({path: 'cursos', select: ['titulo', 'qtdAulas']});
 
             return res.send({turma});
         } catch (err) {
